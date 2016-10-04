@@ -2,9 +2,14 @@
 
 module Blog
   class Article
-    def title(str)
+    def initialize(title, body)
+      @title = title
+      @body = body
+    end
+
+    def title
       words_no_cap = ["in", "the", "of", "and", "or", "from"]
-        phrase = str.split(" ").map {|word|
+        phrase = @title.split(" ").map {|word|
             if words_no_cap.include?(word)
                 word
             else
@@ -13,23 +18,36 @@ module Blog
         }.join(" ")
       p phrase
       end
-    end
+
 
     def body
-      body
+      @body
+    end
+
+    def summary
+      @title.first(5) + @body.first(20)
     end
   end
 end
 
-class Snippet < Article
-    def title
-      super
-    end
+class Snippet < Blog::Article
+    # def title
+    #   super
+    # end
 
-    def body
-      if body.length > 100
-        "#{body[0..100]}..."
-      else
-        body
+  def body
+    if @body.length > 100
+          "#{@body[0..100]}..."
+    else
+        @body
     end
+  end
+
 end
+
+article = Blog::Article.new("lord of the rings", "It was the best of times")
+article.title
+snippet = Snippet.new("lord of the flies", "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.")
+p snippet.body
+p article.body
+# article.summary
